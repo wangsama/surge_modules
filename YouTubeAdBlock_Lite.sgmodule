@@ -1,0 +1,33 @@
+#!name=YouTube Ad Block Lite
+#!desc=拦截 YouTube / Google 广告、统计与追踪请求。适合远程 GitHub 使用。对网页端部分广告有效，对 YouTube App 贴片广告不保证完全生效。
+#!system=mac
+
+[URL Rewrite]
+# Google / YouTube 广告接口
+^https?:\/\/[\w.-]+\.googlevideo\.com\/.+&(oad|ctier|oad_type|adformat|ad_preroll|ad_tag|ad_type)= - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/api\/stats\/ads - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/pagead\/ - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/ptracking - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/get_midroll_info - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/log_event - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/player\/ad_break - reject
+
+# Google 广告 / 追踪
+^https?:\/\/[\w.-]+\.googleadservices\.com\/ - reject
+^https?:\/\/[\w.-]+\.googlesyndication\.com\/ - reject
+^https?:\/\/[\w.-]+\.doubleclick\.net\/ - reject
+^https?:\/\/[\w.-]+\.google-analytics\.com\/ - reject
+^https?:\/\/[\w.-]+\.googletagmanager\.com\/ - reject
+
+[Rule]
+DOMAIN-SUFFIX,googleadservices.com,REJECT
+DOMAIN-SUFFIX,googlesyndication.com,REJECT
+DOMAIN-SUFFIX,doubleclick.net,REJECT
+DOMAIN-SUFFIX,adservice.google.com,REJECT
+DOMAIN-SUFFIX,ads.youtube.com,REJECT
+DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
+DOMAIN-SUFFIX,google-analytics.com,REJECT
+DOMAIN-SUFFIX,googletagmanager.com,REJECT
+
+[MITM]
+hostname = %APPEND% youtube.com, www.youtube.com, m.youtube.com, *.youtube.com, *.googlevideo.com, *.googleadservices.com, *.googlesyndication.com, *.doubleclick.net

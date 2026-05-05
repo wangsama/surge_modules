@@ -1,0 +1,43 @@
+#!name=YouTube Ad Block Aggressive
+#!desc=更激进的 YouTube 去广告模块：拦截广告域名，并清理 youtubei 接口中的广告字段。适合远程 GitHub 使用。可能导致 YouTube 播放或推荐异常。
+#!system=mac
+
+[URL Rewrite]
+# YouTube 广告 / 统计 / 追踪
+^https?:\/\/[\w.-]+\.youtube\.com\/api\/stats\/ads - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/pagead\/ - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/ptracking - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/get_midroll_info - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/log_event - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/att\/log - reject
+^https?:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/player\/ad_break - reject
+
+# Google 广告 / 追踪
+^https?:\/\/[\w.-]+\.googleadservices\.com\/ - reject
+^https?:\/\/[\w.-]+\.googlesyndication\.com\/ - reject
+^https?:\/\/[\w.-]+\.doubleclick\.net\/ - reject
+^https?:\/\/[\w.-]+\.google-analytics\.com\/ - reject
+^https?:\/\/[\w.-]+\.googletagmanager\.com\/ - reject
+^https?:\/\/[\w.-]+\.gstatic\.com\/adx\/ - reject
+
+[Rule]
+DOMAIN-SUFFIX,googleadservices.com,REJECT
+DOMAIN-SUFFIX,googlesyndication.com,REJECT
+DOMAIN-SUFFIX,doubleclick.net,REJECT
+DOMAIN-SUFFIX,adservice.google.com,REJECT
+DOMAIN-SUFFIX,ads.youtube.com,REJECT
+DOMAIN-SUFFIX,pagead2.googlesyndication.com,REJECT
+DOMAIN-SUFFIX,google-analytics.com,REJECT
+DOMAIN-SUFFIX,googletagmanager.com,REJECT
+DOMAIN-SUFFIX,static.doubleclick.net,REJECT
+DOMAIN-SUFFIX,tpc.googlesyndication.com,REJECT
+
+[Script]
+YouTube Player AdBlock = type=http-response, pattern=^https:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/player, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/wangsama/surge_modules/youtube_adblock_aggressive.js
+
+YouTube Browse AdBlock = type=http-response, pattern=^https:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/browse, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/wangsama/surge_modules/youtube_adblock_aggressive.js
+
+YouTube Next AdBlock = type=http-response, pattern=^https:\/\/[\w.-]+\.youtube\.com\/youtubei\/v1\/next, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/wangsama/surge_modules/youtube_adblock_aggressive.js
+
+[MITM]
+hostname = %APPEND% youtube.com, www.youtube.com, m.youtube.com, youtubei.googleapis.com, *.youtube.com, *.googlevideo.com, *.googleadservices.com, *.googlesyndication.com, *.doubleclick.net
